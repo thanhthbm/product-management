@@ -61,3 +61,7 @@
     border-bottom-left-radius: 0;
     height: 38px;
 }
+
+.pagination{
+    text-align: center;
+}
