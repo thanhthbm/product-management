@@ -41,3 +41,23 @@
     padding: 6px 10px;
     border-bottom: 1px solid #515151;
 }
+
+#form-search .input-group {
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    margin: auto;
+}
+
+#form-search .form-control {
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#form-search .input-group-append .btn {
+    white-space: nowrap;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 38px;
+}
