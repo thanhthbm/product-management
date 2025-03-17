@@ -1,4 +1,4 @@
-// button status
+//button_status
 const buttonStatus = document.querySelectorAll('[button-status]');
 if (buttonStatus.length > 0){
     let url = new URL(window.location.href);
@@ -45,3 +45,6 @@ if (buttonsPagination) {
         });
     });
 }
+
+
+
