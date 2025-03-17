@@ -1,4 +1,4 @@
-// button status
+//button_status
 const buttonStatus = document.querySelectorAll('[button-status]');
 if (buttonStatus.length > 0){
     let url = new URL(window.location.href);
@@ -22,7 +22,7 @@ if (formSearch){
     let url = new URL(window.location.href);
     formSearch.addEventListener('submit', (e) => {
         e.preventDefault();
-        const keyword = e.target.elements.keyword.value;
+        const keyword = e.target.elements.keyword.value.trim();
         if (keyword){
             url.searchParams.set('keyword', keyword);
         }
@@ -32,4 +32,19 @@ if (formSearch){
         window.location.href = url.href;
     });
 }
+
+//pagination button
+const buttonsPagination = document.querySelectorAll("[button-pagination]");
+if (buttonsPagination) {
+    buttonsPagination.forEach((button) => {
+        button.addEventListener("click", () => {
+            let url = new URL(window.location.href);
+            const page = button.getAttribute("button-pagination");
+            url.searchParams.set("page", page);
+            window.location.href = url.href;
+        });
+    });
+}
+
+
 

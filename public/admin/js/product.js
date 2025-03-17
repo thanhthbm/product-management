@@ -14,24 +14,3 @@ if (buttonsChangeStatus.length > 0){
        });
     });
 }
-
-// delete product
-const buttonsDelete = document.querySelectorAll('[button-delete]');
-if (buttonsDelete.length > 0){
-    const form = document.querySelector('#form-delete-item');
-    const path = form.getAttribute('data-path');
-    buttonsDelete.forEach(button => {
-       button.addEventListener('click', () => {
-          const isConfirm = confirm('Are you sure to delete this product?');
-
-          if (isConfirm){
-              const id = button.getAttribute('data-id');
-
-              const action = `${path}/${id}?_method=DELETE`;
-              form.action = action;
-              form.submit();
-          }
-       });
-    });
-}
-
