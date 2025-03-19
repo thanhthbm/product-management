@@ -78,7 +78,7 @@ module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
 
     // await Product.deleteOne({_id: id});
-    await Product.deleteOne({_id: id}, {delete: true});
+    await Product.updateOne({_id: id}, {delete: true});
 
     res.redirect(req.get('Referrer') || `${prefixAdmin}/products`);
 }
