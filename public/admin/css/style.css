@@ -65,3 +65,49 @@
 .pagination{
     text-align: center;
 }
+
+[show-alert] {
+    position: fixed;
+    top: 70px;
+    right: 15px !important;  /* Đảm bảo căn sát phải */
+    margin-right: 15px; /* Cách lề phải 15px */
+    z-index: 999;
+    max-width: 300px;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    color: #155724;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+[show-alert].alert-hidden {
+    animation-name: alert-hidden;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+@keyframes alert-hidden {
+    from {
+        right: 15px;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+
+[show-alert] [close-alert] {
+    background: #ffffffc4;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+}
