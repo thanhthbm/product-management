@@ -2,7 +2,8 @@ const Product = require('../../models/product.model.js');
 const filterStatusHelper = require('../../helpers/filterStatus.js');
 const searchHelper = require('../../helpers/search.js');
 const paginationHelper = require('../../helpers/pagination.js')
-
+const systemConfig = require('../../config/system.js');
+console.log(systemConfig.prefixAdmin);
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     const filterStatus = filterStatusHelper(req.query);
@@ -38,7 +39,7 @@ module.exports.index = async (req, res) => {
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip);
 
-    res.render('admin/pages/products/index', {
+    res.render(`admin/pages/products/index`, {
         pageTitle: 'Danh sách sản phẩm',
         products: products,
         filterStatus: filterStatus,
@@ -57,7 +58,7 @@ module.exports.changeStatus = async (req, res) => {
     req.flash('success', 'Status updated successfully!');
     // res.redirect('/admin/products');
     // res.redirect('back'); deprecated
-    res.redirect(req.get('Referrer') || '/admin/products');
+    res.redirect(req.get('Referrer') || `/admin/products`);
 
 }
 
@@ -94,7 +95,7 @@ module.exports.changeMulti = async (req, res) => {
         default:
             break;
     }
-    res.redirect(req.get('Referrer') || `${prefixAdmin}/products`);
+    res.redirect(req.get('Referrer') || `/admin/products`);
 }
 
 
@@ -108,6 +109,34 @@ module.exports.deleteItem = async (req, res) => {
             deletedAt: new Date()
         });
 
-    res.redirect(req.get('Referrer') || `${prefixAdmin}/products`);
+    res.redirect(req.get('Referrer') || `/admin/products`);
+}
+
+//[GET] /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render(`admin/pages/products/create`, {
+        pageTitle: 'Thêm mới sản phẩm'
+    });
+}
+
+//[PƠST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+
+    if (req.body.position === ''){
+        const productsCount = await Product.countDocuments();
+        req.body.position = productsCount + 1;
+    }
+    else{
+        req.body.position = parseInt(req.body.position);
+    }
+
+    const product = new Product(req.body);
+
+    await product.save();
+
+    res.redirect(`/admin/products`);
 }
 
