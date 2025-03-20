@@ -9,6 +9,7 @@ const routeAdmin = require('./routes/admin/index.route');
 const route = require('./routes/client/index.route.js');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const multer = require('multer');
 database.connect();
 
 const app = express();
