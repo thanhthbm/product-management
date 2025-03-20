@@ -1,7 +1,7 @@
 const Product = require('../../models/product.model.js');
 const searchHelper = require('../../helpers/search.js');
 const paginationHelper = require('../../helpers/pagination.js')
-
+const systemConfig = require('../../config/system.js');
 // [GET] /admin/deleted
 
 module.exports.deleted = async (req, res) => {
@@ -29,7 +29,7 @@ module.exports.deleted = async (req, res) => {
     const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip);
 
 
-    res.render('admin/pages/deleted/index', {
+    res.render(`${systemConfig.prefixAdmin}/pages/deleted/index`, {
         pageTitle: 'Trang sản phẩm đã xóa',
         products: products,
         keyword: objectSearch.keyword,
@@ -42,5 +42,5 @@ module.exports.deleted = async (req, res) => {
 module.exports.restore = async (req, res) => {
     const id = req.params.id;
     await Product.updateOne({_id: id}, {deleted: false});
-    res.redirect(req.get('Referrer') || `${prefixAdmin}/deleted`);
+    res.redirect(req.get('Referrer') || `/${prefixAdmin}/deleted`);
 }

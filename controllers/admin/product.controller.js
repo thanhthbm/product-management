@@ -3,7 +3,6 @@ const filterStatusHelper = require('../../helpers/filterStatus.js');
 const searchHelper = require('../../helpers/search.js');
 const paginationHelper = require('../../helpers/pagination.js')
 const systemConfig = require('../../config/system.js');
-console.log(systemConfig.prefixAdmin);
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     const filterStatus = filterStatusHelper(req.query);
@@ -39,7 +38,7 @@ module.exports.index = async (req, res) => {
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip);
 
-    res.render(`admin/pages/products/index`, {
+    res.render(`${systemConfig.prefixAdmin}/pages/products/index`, {
         pageTitle: 'Danh sách sản phẩm',
         products: products,
         filterStatus: filterStatus,
@@ -58,7 +57,7 @@ module.exports.changeStatus = async (req, res) => {
     req.flash('success', 'Status updated successfully!');
     // res.redirect('/admin/products');
     // res.redirect('back'); deprecated
-    res.redirect(req.get('Referrer') || `/admin/products`);
+    res.redirect(req.get('Referrer') || `/${systemConfig.prefixAdmin}/products`);
 
 }
 
@@ -95,7 +94,7 @@ module.exports.changeMulti = async (req, res) => {
         default:
             break;
     }
-    res.redirect(req.get('Referrer') || `/admin/products`);
+    res.redirect(req.get('Referrer') || `/${systemConfig.prefixAdmin}/products`);
 }
 
 
@@ -109,12 +108,12 @@ module.exports.deleteItem = async (req, res) => {
             deletedAt: new Date()
         });
 
-    res.redirect(req.get('Referrer') || `/admin/products`);
+    res.redirect(req.get('Referrer') || `/${systemConfig.prefixAdmin}/products`);
 }
 
 //[GET] /admin/products/create
 module.exports.create = async (req, res) => {
-    res.render(`admin/pages/products/create`, {
+    res.render(`${systemConfig.prefixAdmin}/pages/products/create`, {
         pageTitle: 'Thêm mới sản phẩm'
     });
 }
@@ -137,6 +136,6 @@ module.exports.createPost = async (req, res) => {
 
     await product.save();
 
-    res.redirect(`/admin/products`);
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
 }
 
