@@ -13,6 +13,9 @@ router.delete('/delete/:id', controller.deleteItem);
 
 //no need to pass req and res args to router
 router.get('/create', controller.create);
-router.post('/create', validate.createPost, upload.single('thumbnail'), controller.createPost);
+router.post('/create', upload.single('thumbnail'), validate.createPost, controller.createPost);
+
+router.get('/edit/:id', controller.edit);
+router.patch('/edit/:id', upload.single('thumbnail'), validate.createPost, controller.editPatch);
 
 module.exports = router;

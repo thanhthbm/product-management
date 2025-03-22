@@ -119,7 +119,7 @@ module.exports.create = async (req, res) => {
     });
 }
 
-//[PƠST] /admin/products/create
+//[POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -143,3 +143,51 @@ module.exports.createPost = async (req, res) => {
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
 }
 
+//[GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+
+    try{
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        }
+
+        //using findOne instead of find bc find return a list of product
+        const product = await Product.findOne(find);
+
+        res.render(`${systemConfig.prefixAdmin}/pages/products/edit.pug`, {
+            pageTitle: 'Trang chỉnh sửa sản phẩm',
+            product: product
+        });
+    } catch (error){
+        res.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
+}
+
+//[PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+
+    if (req.body.position === ''){
+        const productsCount = await Product.countDocuments();
+        req.body.position = productsCount + 1;
+    }
+    else{
+        req.body.position = parseInt(req.body.position);
+    }
+
+    if (req.file){
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
+    try{
+        await Product.updateOne({_id: req.params.id}, req.body);
+        req.flash('success', 'Updated successfully!')
+    } catch {
+        res.redirect(`/${systemConfig.prefixAdmin}/products`);
+        req.flash('error', 'Updated failed!');
+    }
+
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
+}
