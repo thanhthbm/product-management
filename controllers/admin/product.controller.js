@@ -121,13 +121,6 @@ module.exports.create = async (req, res) => {
 
 //[PƠST] /admin/products/create
 module.exports.createPost = async (req, res) => {
-    if (!req.body.title)
-    {
-        req.flash('error', 'Please fill in the title!');
-        res.redirect(req.get('Referrer') || `/${systemConfig.prefixAdmin}/products/create`);
-        return;
-    }
-
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
