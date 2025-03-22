@@ -3,6 +3,7 @@ const filterStatusHelper = require('../../helpers/filterStatus.js');
 const searchHelper = require('../../helpers/search.js');
 const paginationHelper = require('../../helpers/pagination.js')
 const systemConfig = require('../../config/system.js');
+const {prefixAdmin} = require("../../config/system");
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     const filterStatus = filterStatusHelper(req.query);
@@ -120,6 +121,13 @@ module.exports.create = async (req, res) => {
 
 //[PƠST] /admin/products/create
 module.exports.createPost = async (req, res) => {
+    if (!req.body.title)
+    {
+        req.flash('error', 'Please fill in the title!');
+        res.redirect(req.get('Referrer') || `/${systemConfig.prefixAdmin}/products/create`);
+        return;
+    }
+
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
@@ -132,9 +140,9 @@ module.exports.createPost = async (req, res) => {
         req.body.position = parseInt(req.body.position);
     }
 
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-    console.log(req.file);
-
+    if (req.file){
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
     const product = new Product(req.body);
 
     await product.save();
