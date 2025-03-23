@@ -4,121 +4,164 @@ include ../../mixins/alert
 block main
 	+alert-success(5000)
 	+alert-error(5000)
-	h1(class='mb-4') Chỉnh sửa sản phẩm
 
-	form(
-		action=`/${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
-		id='form-edit-product'
-		method="POST"
-		enctype='multipart/form-data'
-	)
-		div(class='form-group')
-			label(for='title') Tiêu đề
-			input(
-				type='text'
-				class='form-control'
-				id='title'
-				name='title'
-				required
-				value=product.title
-			)
-		div(class='form-group')
-			label(for='desc') Mô tả
-			textarea(
-				class='form-control'
-				id='desc'
-				name='description'
-				rows='5'
-			) #{product.description}
-		div(class='form-group')
-			label(for='price') Giá
-			input(
-				type='number'
-				class='form-control'
-				id='price'
-				name='price'
-				value=product.price
-				min='0'
-			)
-		div(class='form-group')
-			label(for='discount') % Giảm giá
-			input(
-				type='number'
-				class='form-control'
-				id='discount'
-				name='discountPercentage'
-				value=product.discountPercentage
-				min='0'
-			)
-		div(class='form-group')
-			label(for='stock') Số lượng
-			input(
-				type='number'
-				class='form-control'
-				id='stock'
-				name='stock'
-				value=product.stock
-				min='0'
-			)
-		div(
-			class='form-group'
-			upload-image
-		)
-			label(for='thumbnail') Ảnh
-			input(
-				type='file'
-				class='form-control-file'
-				id='thumbnail'
-				name='thumbnail'
-				accept='image/*'
-				upload-image-input
-			)
-			img(
-				src=product.thumbnail
-				upload-image-preview
-				class='image-preview'
-			)
-			span(
-				close-button
-				class='btn hide-btn'
-			) X
-		div(class='form-group')
-			label(for='position') Vị trí
-			input(
-				type='number'
-				class='form-control'
-				id='position'
-				name='position'
-				placeholder='Tự động tăng'
-				min='1'
-				value=product.position
-			)
+	.container.py-4
+		.card.shadow-sm
+			.card-header.bg-primary.text-white
+				h1(class='mb-0') Chỉnh sửa sản phẩm
 
-		div(class='form-group form-check form-check-inline')
-			input(
-				type='radio'
-				class='form-check-input'
-				id='statusActive'
-				name='status'
-				value='active'
-				checked=(product.status == 'active' ? true : false)
-			)
-			label(for='statusActive' class='form-check-label') Hoạt động
-		div(class='form-group form-check form-check-inline')
-			input(
-				type='radio'
-				class='form-check-input'
-				id='statusInactive'
-				name='status'
-				value='inactive'
-				checked=(product.status == 'inactive' ? true : false)
-			)
-			label(for='statusInactive' class='form-check-label') Dừng hoạt động
-		div(class='form-group')
-			button(
-				type='submit'
-				class='btn btn-primary'
-			) Cập nhật
+			.card-body
+				form(
+					action=`/${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
+					id='form-edit-product'
+					method="POST"
+					enctype='multipart/form-data'
+				)
+					// Title Field
+					.row.mb-3
+						.col-md-6
+							.form-group
+								label(for='title' class='form-label fw-bold') Tiêu đề
+								input(
+									type='text'
+									class='form-control'
+									id='title'
+									name='title'
+									required
+									value=product.title
+								)
 
+					// Description Field
+					.row.mb-3
+						.col-md-12
+							.form-group
+								label(for='desc' class='form-label fw-bold') Mô tả
+								textarea(
+									class='form-control'
+									id='desc'
+									name='description'
+									rows='5'
+								) #{product.description}
+
+					// Price and Discount Fields
+					.row.mb-3
+						.col-md-6
+							.form-group
+								label(for='price' class='form-label fw-bold') Giá (USD)
+								input(
+									type='number'
+									class='form-control'
+									id='price'
+									name='price'
+									value=product.price
+									min='0'
+								)
+						.col-md-6
+							.form-group
+								label(for='discount' class='form-label fw-bold') % Giảm giá
+								input(
+									type='number'
+									class='form-control'
+									id='discount'
+									name='discountPercentage'
+									value=product.discountPercentage
+									min='0'
+								)
+
+					// Stock Field
+					.row.mb-3
+						.col-md-6
+							.form-group
+								label(for='stock' class='form-label fw-bold') Số lượng trong kho
+								input(
+									type='number'
+									class='form-control'
+									id='stock'
+									name='stock'
+									value=product.stock
+									min='0'
+								)
+
+					// Thumbnail Upload Field with Preview
+					.row.mb-3.align-items-center
+						.col-md-6.mb-3.mb-md-0.upload-image-container.position-relative.text-center.border.rounded.p-3.bg-light.shadow-sm(upload-image)
+							label(for='thumbnail' class='form-label fw-bold d-block mb-2') Ảnh sản phẩm
+							input(
+								type='file'
+								class='form-control'
+								id='thumbnail'
+								name='thumbnail'
+								accept='image/*'
+								upload-image-input
+							)
+							.mt-3
+								img(
+									src=product.thumbnail
+									upload-image-preview
+									alt="Product thumbnail"
+									class="img-thumbnail shadow-sm"
+									style="max-height: 200px; object-fit: contain;"
+								)
+								span(
+									id='close-btn'
+									close-button
+									class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 hide-btn"
+								) X
+
+					// Position Field
+					.row.mb-4
+						.col-md-6
+							.form-group
+								label(for='position' class='form-label fw-bold') Vị trí hiển thị
+								input(
+									type='number'
+									class='form-control'
+									id='position'
+									name='position'
+									placeholder='Tự động tăng'
+									min='1'
+									value=product.position
+								)
+
+					// Status Radios
+					.row.mb-4
+						.col-md-12
+							label.form-label.fw-bold Trạng thái
+							.d-flex.gap-4
+								.form-check
+									input(
+										type='radio'
+										class='form-check-input'
+										id='statusActive'
+										name='status'
+										value='active'
+										checked=(product.status == 'active' ? true : false)
+									)
+									label(for='statusActive' class='form-check-label') Hoạt động
+
+								.form-check
+									input(
+										type='radio'
+										class='form-check-input'
+										id='statusInactive'
+										name='status'
+										value='inactive'
+										checked=(product.status == 'inactive' ? true : false)
+									)
+									label(for='statusInactive' class='form-check-label') Dừng hoạt động
+
+					// Submit Button
+					.row.mt-4
+						.col-md-12
+							.d-flex.justify-content-between
+								a.btn.btn-secondary(href=`/${prefixAdmin}/products`)
+									i.fas.fa-arrow-left.me-1
+									| Quay lại
+								button(
+									type='submit'
+									class='btn btn-primary'
+								)
+									i.fas.fa-save.me-1
+									| Cập nhật sản phẩm
 
 	script(src='/admin/js/product.js')

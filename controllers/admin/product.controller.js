@@ -145,7 +145,6 @@ module.exports.createPost = async (req, res) => {
 
 //[GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
-
     try{
         const find = {
             deleted: false,
@@ -190,4 +189,23 @@ module.exports.editPatch = async (req, res) => {
     }
 
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
+}
+
+//[GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+    try{
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        }
+
+        const product = await Product.findOne(find);
+
+        res.render(`${systemConfig.prefixAdmin}/pages/products/detail`, {
+            pageTitle: product.title,
+            product: product
+        });
+    } catch (error) {
+        res.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
 }
