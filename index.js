@@ -11,7 +11,6 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const multer = require('multer');
 database.connect();
-
 const app = express();
 const port = process.env.PORT;
 
