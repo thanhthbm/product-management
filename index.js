@@ -8,7 +8,6 @@ const routeAdmin = require('./routes/admin/index.route');
 const route = require('./routes/client/index.route.js');
 
 database.connect();
-
 const app = express();
 const port = process.env.PORT;
 app.use(methodOverride('_method'));
